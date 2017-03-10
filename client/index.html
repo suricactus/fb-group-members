@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FB групи и множества</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.1/d3.min.js" integrity="sha256-4l+MLGOR7l/v3VuQiGgchPcP2mEDT/9zq+JTLqBdFL8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/bg.js"></script>
+    <script src="./vendor/venn.js/venn.js"></script>
+
+    <style>
+      .fbg-tooltip {
+        position: absolute;
+        text-align: center;
+        width: 128px;
+        background: #333;
+        color: #ddd;
+        padding: 2px;
+        border: 0px;
+        border-radius: 8px;
+        opacity: 0;
+      }
+
+      .select2-container--default .select2-results > .select2-results__options {
+        max-height: 350px;
+      }
+
+      .fbg-text-bold {
+        font-weight: bold;
+        border-right: 1px solid lightgray;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">FB групи и множества</a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <!-- <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#fbg-dlg-about">За страницата</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <aside id="sidebar"></aside>
+        </div>
+        <div class="col-md-8">
+          <div id="fbg-venn"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="fbg-table">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fbg-dlg-about" class="modal fade">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">За страницата</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Затвори">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Функцията на тази страница е да се покаже припокриващите се множества от членове на различни крайни групи, в които членувам.</p>
+            <p>Например от данните се наблюдава, че голяма част от членовете на "NEMILI NE DRAGI" и "KLETA MAJKA BALGARIA" си съвпадат. По-интересни са обаче не толкова тролските, колкото политически и шовинистките групи.</p>
+            <p>Всички данни са изтеглени чрез API-тата на <a href="https://developers.facebook.com/" target="blank">facebook.com.</a> и нямат претенция за крайна изчерпателност.</p>
+            <p>Изходния код и данни са свободни за модификация и разпространение с MIT лиценз.</p>
+            <p><strong>Twitter:</strong> <a href="https://twitter.com/suricactus" target="blank">@suricactus</a></p>
+            <p><strong>Github:</strong> <a href="https://github.com/suricactus" target="blank">@suricactus</a></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    const MAX_GROUPS_TO_COMPARE = 5;
+    const $sidebar = $('#sidebar');
+    const groups = {};
+
+    d3.csv('../groups.csv', function(err, result) {
+      if(err) {
+        throw new Error(err);
+      }
+
+      for(let i = 0, l = result.length; i < l; i++) {
+        const r = result[i];
+
+        groups[ r.main_id ] = groups[ r.main_id ] || { relations: {}, };
+
+        if(+r.main_id === +r.matching_id) {
+          groups[ r.main_id ].data = {
+            sets: [ +r.main_id ],
+            label: r.main_name,
+            size: +r.count_all,
+          };
+        } else {
+          groups[ r.main_id ].relations[r.matching_id] = {
+            sets: [ +r.main_id , +r.matching_id ],
+            size: +r.count_match,
+          };
+        }
+      }
+
+      init();
+    });
+
+    function init() {
+      generateSelects();
+
+      $sidebar.on('change', 'select', (e) => {
+        const vals = getSelectsVals();
+        const sets = getSets(vals);
+        const tblData = getTableData(vals);
+
+        d3DrawVennDiagram(sets);
+        d3DrawTable(tblData);
+      });
+
+    }
+
+    function generateSelects() {
+      const groupsArr = Object.values(groups).sort((a, b) => b.data.size - a.data.size);
+
+      for(let i = 0; i < MAX_GROUPS_TO_COMPARE; i++) {
+        const $select = $(`<select id="fbg-group-${ i }" class="form-control"></select>`);
+        const $formGroup = $('<div class="form-group"></div>');
+
+        $select.append(`<option value="">- няма избрано -</option>`);
+
+        for(let j in groupsArr) {
+          $select.append(`<option value="${ groupsArr[j].data.sets[0] }">${ groupsArr[j].data.label } (${ groupsArr[j].data.size })</option>`);
+        }
+
+        $formGroup.append(`<label for="fbg-group-${ i }">FB група ${ i + 1 }</label>`);
+        $formGroup.append($select);
+
+        $sidebar.append($formGroup);
+
+        $select.select2();
+      }
+
+    }
+
+    function getSelectsVals() {
+      const vals = [];
+
+      $sidebar.find('select').each((i, el) => {
+        const val = $(el).val();
+
+        if(val !== '') {
+          vals.push(+val);
+        }
+      });
+
+      vals.sort();
+
+      return vals;
+    }
+
+    function getSets(vals) {
+      const sets = [];
+
+      for(let i = 0, l = vals.length; i < l; i++) {
+        const groupId = vals[i];
+
+        sets.push(groups[groupId].data);
+
+        if(i == 0) {
+          continue;
+        }
+
+        for(let j = i - 1; j >= 0; j--) {
+          const matchingGroupId = vals[j];
+          const biggerId = Math.max(matchingGroupId, groupId);
+          const lesserId = Math.min(matchingGroupId, groupId);
+
+          if(groups[biggerId].relations[lesserId]) {
+            sets.push(groups[biggerId].relations[lesserId]);
+          }
+        }
+      }
+
+      return sets;
+    }
+
+    function getTableData(vals) {
+      const tableData = [['']];
+      const groupId2IndexMap = {};
+      let groupId2IndexSeq = 1;
+
+      for(let i = 0, l = vals.length; i < l; i++) {
+        const groupId = vals[i];
+
+        groupId2IndexMap[groupId] = (groupId2IndexMap[groupId] !== undefined) ? groupId2IndexMap[groupId] : groupId2IndexSeq++;
+
+        tableData[0].push(groups[groupId].data.label);
+
+        tableData[ groupId2IndexMap[groupId] ] = tableData[ groupId2IndexMap[groupId] ] || [];
+
+        tableData[ groupId2IndexMap[groupId] ][0] = groups[groupId].data.label;
+
+        tableData[ groupId2IndexMap[groupId] ][ groupId2IndexMap[groupId] ] = groups[groupId].data.size;
+
+        for(let j = i; j >= 0; j--) {
+          const matchingGroupId = vals[j];
+          const biggerId = Math.max(matchingGroupId, groupId);
+          const lesserId = Math.min(matchingGroupId, groupId);
+
+          if(groups[biggerId].relations[lesserId]) {
+            tableData[ groupId2IndexMap[groupId] ][ groupId2IndexMap[matchingGroupId] ] = groups[biggerId].relations[lesserId].size;
+            tableData[ groupId2IndexMap[matchingGroupId] ][ groupId2IndexMap[groupId] ] = groups[biggerId].relations[lesserId].size;
+          }
+        }
+      }
+
+      return tableData;
+    }
+
+    function d3DrawVennDiagram(sets) {
+      const div = d3.select('#fbg-venn');
+      const chart = venn.VennDiagram()
+                       .width(div.node().getBoundingClientRect().width)
+                       .height(500);
+
+      div.selectAll('*').remove();
+      div.datum(sets).call(chart);
+
+      const tooltip = d3.select('body').append('div')
+          .attr('class', 'fbg-tooltip');
+
+      div.selectAll('path')
+          .style('stroke-opacity', 0)
+          .style('stroke', '#fff')
+          .style('stroke-width', 3)
+
+      div.selectAll('g')
+          .on('mouseover', function(d, i) {
+              // sort all the areas relative to the current item
+              venn.sortAreas(div, d);
+
+              // Display a tooltip with the current size
+              tooltip.transition().duration(400).style('opacity', .9);
+              tooltip.text(d.size + ' users');
+
+              // highlight the current path
+              const selection = d3.select(this).transition('tooltip').duration(400);
+              selection.select('path')
+                  .style('fill-opacity', d.sets.length == 1 ? .4 : .1)
+                  .style('stroke-opacity', 1);
+          })
+
+          .on('mousemove', function() {
+              tooltip.style('left', (d3.event.pageX) + 'px')
+                     .style('top', (d3.event.pageY - 28) + 'px');
+          })
+
+          .on('mouseout', function(d, i) {
+              tooltip.transition().duration(400).style('opacity', 0);
+              const selection = d3.select(this).transition('tooltip').duration(400);
+              selection.select('path')
+                  .style('fill-opacity', d.sets.length == 1 ? .25 : .0)
+                  .style('stroke-opacity', 0);
+          });
+    }
+
+    function d3DrawTable(tblData) {
+      const tableContainer = d3.select('#fbg-table');
+      const cols = tblData.shift();
+
+      tableContainer.selectAll('*').remove();
+
+      const table = tableContainer.append('table')
+        .attr('class', 'table table-striped');
+
+      table.append('thead').append('tr')
+        .selectAll('th')
+        .data(cols)
+        .enter()
+        .append('th')
+        .text(d => d);
+
+      const tr = table.append('tbody')
+        .selectAll('tr')
+        .data(tblData)
+        .enter()
+        .append('tr');
+
+      const td = tr.selectAll('td')
+        .data(d => d)
+        .enter()
+        .append('td')
+        .attr('class', d => typeof d === 'string' ? 'fbg-text-bold' : '')
+        .text(d => d)
+
+    }
+
+
+
+    </script>
+  </body>
+</html>
