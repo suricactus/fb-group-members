@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CREATE TEMPORARY TABLE groups_with_totals (
   id int unique not null,
   name text not null,
@@ -15,10 +16,14 @@ INSERT INTO groups_with_totals (id, name, count_all)
 
 
 EXPLAIN SELECT
+=======
+SELECT
+>>>>>>> gh-pages
   g1.id AS main_id,
   g1.name AS main_name,
   g2.id AS matching_id,
   g1.count_all AS count_all,
+<<<<<<< HEAD
   count(NULLIF(GU1.user_id = GU2.user_id, 0)) AS count_match
 FROM
   groups_with_totals AS g1
@@ -32,3 +37,16 @@ GROUP BY g1.id, g1.name, g2.id, g2.name
 
 
 -- select count(*), g.id, g.name from fb_groups_users gu join fb_groups g on gu.group_id = g.id group by g.name order by 1 desc;
+=======
+  count(GU1.id) AS count_all1,
+  count(GU2.id) AS count_match
+FROM
+  groups_with_totals AS g1
+JOIN fb_groups AS g2 ON g1.id >= g2.id
+JOIN fb_groups_users AS GU1 ON GU1.group_id = g1.id
+LEFT JOIN fb_groups_users AS GU2 ON GU2.group_id = g2.id AND GU1.user_id = GU2.user_id
+WHERE 1 = 1
+GROUP BY g1.id, g1.name, g2.id, g1.count_all
+;
+
+>>>>>>> gh-pages

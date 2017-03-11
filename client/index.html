@@ -51,6 +51,12 @@
           <li class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#fbg-dlg-about">За страницата</a>
           </li>
+<<<<<<< HEAD
+=======
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#fbg-dlg-programmers">За програмистите</a>
+          </li>
+>>>>>>> gh-pages
         </ul>
       </div>
     </nav>
@@ -82,12 +88,119 @@
             </button>
           </div>
           <div class="modal-body">
+<<<<<<< HEAD
             <p>Функцията на тази страница е да се покаже припокриващите се множества от членове на различни крайни групи, в които членувам.</p>
             <p>Например от данните се наблюдава, че голяма част от членовете на "NEMILI NE DRAGI" и "KLETA MAJKA BALGARIA" си съвпадат. По-интересни са обаче не толкова тролските, колкото политически и шовинистките групи.</p>
             <p>Всички данни са изтеглени чрез API-тата на <a href="https://developers.facebook.com/" target="blank">facebook.com.</a> и нямат претенция за крайна изчерпателност.</p>
             <p>Изходния код и данни са свободни за модификация и разпространение с MIT лиценз.</p>
             <p><strong>Twitter:</strong> <a href="https://twitter.com/suricactus" target="blank">@suricactus</a></p>
             <p><strong>Github:</strong> <a href="https://github.com/suricactus" target="blank">@suricactus</a></p>
+=======
+<p>Приложениета "FB групи и множества" има за цел да представи фейсбук потребителите, които едновременно членуват в две или повече групи. Целта е да се сверят някои противоречия и зависимости между членовете на групи с подобни или противоположна идеология.</p>
+<p>Събраните данни са идеални за занимаващи се със социология за проучване на нагласите на потребителите на най-голямата социална мрежа.</p>
+<p>Интересни зависимости, които могат да се наблюдават с получените данни:</p>
+<ul>
+<li>1/15 от групата&nbsp;"<a href="https://www.facebook.com/groups/1068597903184746/" target="_blank">Фенове на Курволяци</a>" са членове на&nbsp;"<a href="https://www.facebook.com/groups/bulru/" target="_blank">БЪЛГАРИЯ - РУСИЯ FACEBOOK FRIENDS</a>".</li>
+<li>25% от "<a href="https://www.facebook.com/groups/1504679289746034/" target="_blank">РПГ (Русофил-Путинистка Гвардия)</a>" са членове и на "<a href="https://www.facebook.com/groups/143366949008168/" target="_blank">ПРИЯТЕЛИ НА РУСИЯ - ДРУЗЬЯ РОССИИ</a>".</li>
+<li>Голяма част от членовете на "<a href="https://www.facebook.com/groups/980371352022333/" target="_blank">NEMILI NE DRAGI</a>" и "<a href="https://www.facebook.com/groups/676780899106908/?fref=nf" target="_blank">KLETA MAJKA BALGARIA</a>" си съвпадат, тъй като двете групи са с тролски характер и техните членове може да се ползват за репер колко сериозни са тематиките на съответните групи, т.е. колко повече техни членове в съответната група, толкова по-вероятно групата е тролска.</li>
+<li>"<a href="https://www.facebook.com/groups/376939412405555/" target="_blank">ДЕСЕН ПЪТ</a>" и "<a href="https://www.facebook.com/groups/demontirane/" target="_blank">Гражданска инициатива за демонтиране на паметника на съветската армия</a>" също си съвпадат с голям процент от потребителите си, предвид особената антисъветска реторика в тях.</li>
+</ul>
+<p style="text-align: justify;">Всички данни са изтеглени чрез API-тата на <a href="https://developers.facebook.com/" target="blank">facebook.com.</a> и нямат претенция за крайна изчерпателност.</p>
+<p>Изходния код и данни са свободни за модификация и разпространение с MIT лиценз.</p>
+<p><strong>Twitter:</strong> <a href="https://twitter.com/suricactus" target="blank">@suricactus</a></p>
+<p><strong>Github:</strong> <a href="https://github.com/suricactus" target="blank">@suricactus</a></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fbg-dlg-programmers" class="modal fade">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">За програмистите</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Затвори">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+<p>От доста години имам странна мания да колекционирам възможно най-абсурдните групи във фейсбук. Само част от тях са "<a href="https://www.facebook.com/groups/183101475126761/" target="_blank">ЗА възстановяване на петолъчката над Партийния дом!</a>, "<a href="https://www.facebook.com/groups/1504679289746034/?ref=br_rs" target="_blank">РПГ (Русофил-Путинистка Гвардия)</a>", "<a href="https://www.facebook.com/groups/575413325869832/" target="_blank">ИСТИНАТА Е НЯКЪДЕ ТАМ</a>" и прочие, чиито списък може да се види в настоящото приложение. С времето се зачудих дали наистина има 500 души, които искат да се върне петолъчката на сградата на Народното събрание и колко от тях са хардкор комунисти, срещани в другите съветофило-путинистко-комунистически групи.</p>
+<p>Мина доста време от първите ми чудения по този въпрос, може би две или три, когато случайно попаднах на&nbsp;<a href="https://www.npmjs.com/package/facebook-export" target="_blank">facebook-export</a>&nbsp;модула в node. Отначало реших, че ще може идеално да изпълни целите ми, впоследствие открих, че не съвсем. За съжаление има проблеми със страницирането, а и&nbsp;запазването на информацията в ~ не ми хареса като идея.&nbsp;</p>
+<p>Впоследствие погледнах API-то на facebook и открих, че възможността за изтегляне на данни за членовете на групи ще изчезне заедно в Graph API 2.2 и затова реших, че е крайно време да напиша съответния скрипт.</p>
+<p>И така в крайна сметка спретнах простото скриптче:</p>
+<ul>
+<li>node скрипт за изтегляне на данните</li>
+<li>sqlite за съхранението им в три таблици - fb_groups, fb_users и fb_groups_users</li>
+<li>d3.js за визуализацията им с якия venn.js</li>
+</ul>
+<p>След това оставаше само да видя кои са припокриващите се множества от една група до друга група. Всичко щеше да е идеално, ако не се бях заблудил, че&nbsp;за да сметна потребителите на, които членуват във всяка отделна група ми трябват два cross join-а, което ми коства... над денонощия 100% CPU usage.</p>
+<p>Тук е и цялата развръзка и поука. Какво бях измислил в началото:</p>
+<pre>SELECT
+  g1.id AS main_id,
+  g1.name AS main_name,
+  g2.id AS matching_id,
+  &lt;SOME MAGIC HERE&gt; AS count_all,
+  count(NULLIF(GU1.user_id = GU2.user_id, 0)) AS count_match
+FROM fb_groups AS g1
+JOIN fb_groups AS g2 ON g1.id &gt;= g2.id
+JOIN fb_groups_users AS GU1 ON GU1.group_id = g1.id
+LEFT JOIN fb_groups_users AS GU2 ON GU2.group_id = g2.id
+WHERE 1 = 1
+GROUP BY g1.id, g1.name, g2.id;</pre>
+<p>Което естествено така и не успя да сработи. Опитах с подзаявка във from-а, но тогава sqlite-а гърмеше. След това имах гениална идея - нека да преизчисля count_all предварително в temp таблица и след това да се занимавам само с join-ите, но отново да са fb_groups^2 * fb_group_members^2, което на прост език ще рече 250^2*1000000^2 или&nbsp;62500000000000000 реда. Може да се предположи, че това отне трийсетина часа да се изпълни.</p>
+<pre>DROP TABLE groups_with_totals;
+
+CREATE TEMPORARY TABLE groups_with_totals (
+  id int unique not null,
+  name text not null,
+  count_all int not null
+);
+
+INSERT INTO groups_with_totals (id, name, count_all)
+  SELECT
+    G0.id,
+    G0.name,
+    count(*) AS count_all
+  FROM fb_groups AS G0
+  JOIN fb_groups_users AS GU0 ON GU0.group_id = G0.id
+  GROUP BY G0.id, G0.name;
+
+SELECT
+  g1.id AS main_id,
+  g1.name AS main_name,
+  g2.id AS matching_id,
+  g1.count_all AS count_all,
+  count(NULLIF(GU1.user_id = GU2.user_id, 0)) AS count_match
+FROM groups_with_totals AS g1
+JOIN fb_groups AS g2 ON g1.id &gt;= g2.id
+JOIN fb_groups_users AS GU1 ON GU1.group_id = g1.id
+LEFT JOIN fb_groups_users AS GU2 ON GU2.group_id = g2.id
+WHERE 1 = 1
+GROUP BY g1.id, g1.name, g2.id, g1.count_all;
+
+</pre>
+<p>В крайна сметка това работеше, но отнемаше ужасно много време. Тогава изведнъж ме озари идеята какво всъщност ми трябваше:</p>
+<pre>SELECT
+  g1.id AS main_id,
+  g1.name AS main_name,
+  g2.id AS matching_id,
+  count(GU1.id) AS count_all1,
+  count(GU2.id) AS count_match
+FROM fb_groups AS g1
+JOIN fb_groups AS g2 ON g1.id &gt;= g2.id
+JOIN fb_groups_users AS GU1 ON GU1.group_id = g1.id
+LEFT JOIN fb_groups_users AS GU2 ON GU2.group_id = g2.id AND GU1.user_id = GU2.user_id
+WHERE 1 = 1
+GROUP BY g1.id, g1.name, g2.id;
+</pre>
+<p>След тази промяна заявката се изпълнява за около 30 секунди, което никак ни е зле, предвид че преди това чаках няколко дни, за да се получи резултат. Като заключение мога да кажа, че понякога човек толкова се заблуждава в правотата на дадено решение, че съвсем изпуска прости оптимизации, които буквално могат да му спестят дни.</p>
+<p>Всичко останало мисля, че е ясно, ако има някакви въпроси кода в <a href="https://github.com/suricactus/fb-group-members" target="_blank">github</a>&nbsp;е достатъчно описателен.</p>
+
+
+>>>>>>> gh-pages
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
