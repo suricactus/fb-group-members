@@ -35,7 +35,7 @@ async function callMe() {
       fb_group_id NUMERIC NOT NULL UNIQUE,
       fb_privacy TEXT NOT NULL,
       fb_bookmark_order INTEGER NOT NULL,
-      timestamp DATETIME DEFAULT (datetime('now','localtime'))
+      timestamp DATETIME DEFAULT 'now'
     );
   `);
 
@@ -44,7 +44,7 @@ async function callMe() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       fb_user_id NUMERIC NOT NULL UNIQUE,
-      timestamp DATETIME DEFAULT (datetime('now','localtime'))
+      timestamp DATETIME DEFAULT 'now'
     );
 
     `);
@@ -55,7 +55,7 @@ async function callMe() {
       group_id INTEGER NOT NULL REFERENCES fb_groups,
       user_id INTEGER NOT NULL REFERENCES db_users,
       is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-      timestamp DATETIME DEFAULT (datetime('now','localtime')),
+      timestamp DATETIME DEFAULT 'now',
       UNIQUE(group_id, user_id)
     );
     `);
@@ -81,9 +81,7 @@ async function callMe() {
     }
   });
 
-  // const groups = await db.all('SELECT * FROM fb_groups where fb_group_id = \'1504679289746034\'');
-  // const groups = await db.all('SELECT * FROM fb_groups where id in (22, 95, 77, 36, 123, 47, 70, 66, 59, 109, 43, 45, 51, 65, 44, 99, 100, 106, 55, 24, 8, 20, 69, 6, 60, 19, 21, 139, 4, 18, 17, 118, 11, 16, 121, 122)');
-  const groups = await db.all('SELECT * FROM fb_groups ');
+  const groups = await db.all(`SELECT * FROM fb_groups`);
 
   groups.forEach(async function(gr) {
     let membersEmmiter = await fetchMembers({
