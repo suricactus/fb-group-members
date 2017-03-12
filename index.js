@@ -55,7 +55,6 @@ async function callMe() {
       group_id INTEGER NOT NULL REFERENCES fb_groups,
       user_id INTEGER NOT NULL REFERENCES db_users,
       is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-      timestamp DATETIME DEFAULT (datetime('now','localtime')),
       timestamp DATETIME DEFAULT 'now',
       UNIQUE(group_id, user_id)
     );
