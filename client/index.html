@@ -215,7 +215,7 @@ GROUP BY g1.id, g1.name, g2.id;
     const $sidebar = $('#sidebar');
     const groups = {};
 
-    d3.csv('../groups.csv', function(err, result) {
+    d3.csv('../groups.csv?new', function(err, result) {
       if(err) {
         throw new Error(err);
       }
